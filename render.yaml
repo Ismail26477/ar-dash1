@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: ar-computers-admin
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    # SPA fallback: every route serves index.html so client-side routing works
+    # (refreshing /admin/orders or deep-linking won't 404).
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_SUPABASE_PROJECT_ID
+        sync: false
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_PUBLISHABLE_KEY
+        sync: false

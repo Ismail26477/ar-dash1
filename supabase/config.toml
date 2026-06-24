@@ -1,0 +1,21 @@
+project_id = "leayxahmtngeyuxhqimg"
+
+[api]
+enabled = true
+port = 54321
+
+# Razorpay: create order — requires an authenticated customer
+[functions.create-order]
+verify_jwt = true
+
+# Razorpay: verify payment signature — requires an authenticated customer
+[functions.verify-payment]
+verify_jwt = true
+
+# Razorpay webhook — called by Razorpay, authenticated via webhook signature
+[functions.razorpay-webhook]
+verify_jwt = false
+
+# Transactional email — validated internally; safe no-op without RESEND_API_KEY
+[functions.send-email]
+verify_jwt = false

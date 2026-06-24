@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -rn \"^const campaigns = \\\\[\\\\|^const faqs = \\\\[\" src/pages/Marketing.tsx src/pages/Help.tsx)",
+      "Bash(grep -rn '\"/admin\"' src/)"
+    ]
+  }
+}
