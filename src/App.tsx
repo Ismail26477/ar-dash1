@@ -2,8 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider, RequireAuth } from "@/contexts/AuthContext";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // Admin dashboard pages
 import Index from "./pages/Index";
@@ -22,15 +22,10 @@ import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 
-// Auth + order detail (admin)
-import Login from "./pages/auth/Login";
+// Order detail
 import OrderDetail from "./pages/orders/OrderDetail";
 
 const queryClient = new QueryClient();
-
-const AdminRoute = ({ children }: { children: React.ReactNode }) => (
-  <RequireAuth adminOnly>{children}</RequireAuth>
-);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -40,27 +35,24 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            {/* Admin authentication */}
-            <Route path="/login" element={<Login />} />
+            {/* Open dashboard routes; login now sends visitors straight to the dashboard. */}
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/products" element={<Products />} />
+            <Route path="/admin/customers" element={<Customers />} />
+            <Route path="/admin/analytics" element={<Analytics />} />
+            <Route path="/admin/marketing" element={<Marketing />} />
+            <Route path="/admin/payments" element={<Payments />} />
+            <Route path="/admin/fulfillment" element={<Fulfillment />} />
+            <Route path="/admin/reviews" element={<Reviews />} />
+            <Route path="/admin/discounts" element={<Discounts />} />
+            <Route path="/admin/support" element={<Support />} />
+            <Route path="/admin/notifications" element={<Notifications />} />
+            <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/admin/help" element={<Help />} />
 
-            {/* Admin dashboard (staff only) */}
-            <Route path="/" element={<AdminRoute><Index /></AdminRoute>} />
-            <Route path="/admin/orders" element={<AdminRoute><Orders /></AdminRoute>} />
-            <Route path="/admin/products" element={<AdminRoute><Products /></AdminRoute>} />
-            <Route path="/admin/customers" element={<AdminRoute><Customers /></AdminRoute>} />
-            <Route path="/admin/analytics" element={<AdminRoute><Analytics /></AdminRoute>} />
-            <Route path="/admin/marketing" element={<AdminRoute><Marketing /></AdminRoute>} />
-            <Route path="/admin/payments" element={<AdminRoute><Payments /></AdminRoute>} />
-            <Route path="/admin/fulfillment" element={<AdminRoute><Fulfillment /></AdminRoute>} />
-            <Route path="/admin/reviews" element={<AdminRoute><Reviews /></AdminRoute>} />
-            <Route path="/admin/discounts" element={<AdminRoute><Discounts /></AdminRoute>} />
-            <Route path="/admin/support" element={<AdminRoute><Support /></AdminRoute>} />
-            <Route path="/admin/notifications" element={<AdminRoute><Notifications /></AdminRoute>} />
-            <Route path="/admin/settings" element={<AdminRoute><Settings /></AdminRoute>} />
-            <Route path="/admin/help" element={<AdminRoute><Help /></AdminRoute>} />
-
-            {/* Full order view (admin) */}
-            <Route path="/order/:orderNumber" element={<AdminRoute><OrderDetail /></AdminRoute>} />
+            <Route path="/order/:orderNumber" element={<OrderDetail />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
